@@ -1,11 +1,15 @@
 package main
 
 import (
-	"shenlong/ippool_server/ippoolserver"
+	"log"
+	"shenlong/ippool_server/server"
 )
 
 //"shenlong/ippool_server/ippoolserver"
 
 func main() {
-	ippoolserver.Start()
+	log.SetFlags(log.LstdFlags | log.Lshortfile)
+	appConfig := server.GetAppConf()
+	appConfig.LoadConfig()
+	server.Start()
 }

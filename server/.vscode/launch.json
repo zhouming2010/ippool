@@ -11,7 +11,7 @@
             "args": [], 
             "env": {}, 
             "showLog": true,
-            "cwd": "${workspaceFolder}",
+            "cwd": "${workspaceFolder}/../out/win32",
           },
     ]
 }
