@@ -7,6 +7,8 @@ import (
 	"io"
 	"log"
 	"net"
+	"os"
+	"time"
 )
 
 type Server struct {
@@ -143,6 +145,65 @@ func sendErrorResponse(conn net.Conn, errorMsg string) {
 }
 
 func main() {
-	server := Server{}
-	server.listenAndServe("tcp", "0.0.0.0:1080")
+	log.SetOutput(os.Stdout)
+	//test2()
+	//server := Server{}
+	//server.listenAndServe("tcp", "0.0.0.0:1080")
+	test4()
+}
+
+func test2() {
+	m := make(map[string]int)
+	m["apple"] = 1
+	m["pear"] = 2
+	for key, value := range m {
+		log.Println("key=", key, ",value =", value)
+	}
+
+	c := make(chan string)
+
+	go func() {
+		c <- "hello"
+	}()
+
+	str := <-c
+	log.Printf("str = %s", str)
+
+}
+
+func test3() {
+	ch := make(chan int)
+
+	go func() {
+		time.Sleep(10 * time.Second)
+		ch <- 42
+	}()
+
+	for {
+		select {
+		case v := <-ch:
+			fmt.Println("Received value:", v)
+		default:
+			fmt.Println("No value received - channel is empty")
+		}
+	}
+}
+
+func test4() {
+	ch := make(chan []byte, 100)
+
+	go func() {
+		n := 0
+		for {
+			time.Sleep(1 * time.Second)
+			message := []byte("队列消息: " + time.Now().Format(time.RFC3339))
+			ch <- message
+			n++
+		}
+	}()
+
+	for v := range ch {
+		s := string(v)
+		fmt.Println(s)
+	}
 }
